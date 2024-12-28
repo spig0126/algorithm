@@ -10,22 +10,6 @@ class Main
     static int N, K, k, cnt;
     static LinkedList<Box> topBelt = new LinkedList<>(), belowBelt = new LinkedList<>();
     
-    static void printBelt(int n){
-        System.out.println("\n-----------" + n + "-------------");
-        for(int i=0; i<N; i++){
-            Box box = topBelt.pollFirst();
-            System.out.print(box + " ");
-            topBelt.addLast(box);
-        }
-        System.out.println();
-        for(int i=0; i<N; i++){
-            Box box = belowBelt.pollFirst();
-            System.out.print(box + " ");
-            belowBelt.addLast(box);
-        }
-            
-    }
-    
     static void input() throws IOException{
         st = new StringTokenizer(in.readLine());
         N = Integer.parseInt(st.nextToken());
@@ -46,7 +30,6 @@ class Main
         topBelt.addFirst(belowBelt.pollFirst());
         belowBelt.addLast(topBelt.pollLast());
         topBelt.peekLast().hasRobot = false;
-        // printBelt(1);
     }
     
     static void stepTwo(){
@@ -65,7 +48,6 @@ class Main
             topBelt.addFirst(box);
         }
         topBelt.peekLast().hasRobot = false;
-        // printBelt(2);
     }
     
     static void stepThree(){
@@ -76,12 +58,10 @@ class Main
             if(box.strength == 0)
                         k++;
         }
-        // printBelt(3);
     }
     
     static void runSteps(){
         while(k < K){
-            // System.out.print("\n==========" + cnt + " " + k + "===========");
             stepOne();
             stepTwo();
             stepThree();
@@ -97,11 +77,6 @@ class Main
             this.strength = strength;
             this.hasRobot = hasRobot;
         }
-        
-        @Override
-        public String toString(){
-            return "[" + strength + " " + hasRobot + "]";
-        }
     }
     
 	public static void main (String[] args) throws java.lang.Exception
@@ -109,8 +84,6 @@ class Main
 		input();
 		runSteps();
 		System.out.println(cnt);
-
-
 	}
 }
 
