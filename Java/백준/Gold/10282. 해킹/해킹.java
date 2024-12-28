@@ -11,7 +11,6 @@ class Main
     static int T, N, D, C;
     static int visited[];
     static ArrayList<int[]>[] edge;
-    static HashSet<Integer> infected;
     
     static void input() throws IOException{
         st = new StringTokenizer(in.readLine());
@@ -21,7 +20,6 @@ class Main
         
         edge = new ArrayList[N + 1];
         visited = new int[N + 1];
-        infected = new HashSet<>();
         
         Arrays.fill(visited, Integer.MAX_VALUE);
         
@@ -40,8 +38,9 @@ class Main
     static void bfs(){
         int infectCnt = 0, maxTime = 0;
         PriorityQueue<Node> pq = new PriorityQueue<>();
+        visited[C] = 0;
         pq.add(new Node(C, 0));
-        infected.add(C);
+
         
         while(!pq.isEmpty()){
             Node node = pq.poll();
@@ -54,15 +53,16 @@ class Main
                 if(visited[nextComputer] <= nextTime)
                     continue;
                 visited[nextComputer] = nextTime;
-                infected.add(nextComputer);
                 pq.add(new Node(nextComputer, nextTime));
             }
         }
         for(int i=0; i<N + 1; i++){
-            if(visited[i] != Integer.MAX_VALUE)
+            if(visited[i] != Integer.MAX_VALUE){
                 maxTime = Math.max(maxTime, visited[i]);
+                infectCnt++;
+            }
         }
-        sb.append(infected.size() + " " + maxTime + "\n");
+        sb.append(infectCnt + " " + maxTime + "\n");
         
     }
 
@@ -91,4 +91,5 @@ class Main
 		System.out.println(sb);
 	}
 }
+
 
