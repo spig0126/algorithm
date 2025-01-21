@@ -9,6 +9,7 @@ class Main
   static StringBuilder sb = new StringBuilder();
   
   static int N, Q, apple[][];
+  static TreeMap<Integer, Integer> dp = new TreeMap<>();
   static TreeMap<Integer, TreeMap<Integer, Integer>> map = new TreeMap<>();
   
   static void readLine() throws Exception{
@@ -45,26 +46,44 @@ class Main
     }
   }
   
+  static void calDp(){
+    Integer t = map.lastKey();
+    int maxVal = 0, cnt = 0;
+    
+    while(t != null){
+      TreeMap<Integer, Integer> cntMap = map.get(t);
+      int temp = cntMap.lastKey();
+      if(temp == maxVal){
+        cnt += cntMap.get(maxVal);
+      }
+      else if(maxVal < temp){
+        maxVal = temp;
+        cnt = cntMap.get(maxVal);
+      }
+      
+      dp.put(t, cnt);
+      t = map.lowerKey(t);
+    }
+  }
+  
+  
   static void solution() throws Exception {
+    calDp();
+    
     for(int q=0; q<Q; q++){
       int cnt = 0, maxVal = 0;
       int p = Integer.parseInt(in.readLine());
       
-      SortedMap<Integer, TreeMap<Integer, Integer>> tailMap = map.tailMap(p);
-      for(int t: tailMap.keySet()){
-        TreeMap<Integer, Integer> cntMap = tailMap.get(t);
-        
-        int temp = cntMap.lastKey();
-        if(temp == maxVal){
-          cnt += cntMap.get(maxVal);
-        }
-        else if(maxVal < temp){
-          maxVal = temp;
-          cnt = cntMap.get(maxVal);
-        }
+      if(dp.containsKey(p)){
+        sb.append(dp.get(p) + "\n");
       }
-      
-      sb.append(cnt + "\n");
+      else{
+        Integer temp = dp.higherKey(p);
+        if(temp == null)
+          sb.append("0\n");
+        else
+          sb.append(dp.get(dp.higherKey(p)) + "\n");
+      }
     }
     
     System.out.println(sb);
